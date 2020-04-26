@@ -29,6 +29,7 @@ class Predictor():
 
             loaded_model.load_weights("weights/model_weights.h5")
             self.model=loaded_model
+            print(self.model.summary())
         except:
             print('Loading backup weights')
             self._load_backup()
@@ -127,3 +128,5 @@ class Predictor():
 
         acc = self.model.predict(model_input)
         return acc[0]
+
+pre = Predictor()
