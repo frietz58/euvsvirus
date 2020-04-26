@@ -10,7 +10,7 @@ Based on our current training and testing efforts, our model can accurately dete
 We use 3 publicly available datasets:
 - [Fake News: Kaggle dataset](https://www.kaggle.com/c/fake-news/data)
 - [Liar: a benchmark dataset for fake news detection](https://github.com/thiagorainmaker77/liar_dataset)
-- [Buzzfeed Political News Data & Random Political News Data] (https://github.com/rpitrust/fakenewsdata1)
+- [Buzzfeed Political News Data & Random Political News Data](https://github.com/rpitrust/fakenewsdata1)
 
 Each of the dataset entries is first preprocessed and then used for training a deep neural network classifier. The preprocessing consists of tokenization with [Keras](https://keras.io/preprocessing/text/) and vectorization with the [GloVe word embedding](https://nlp.stanford.edu/projects/glove/). The neural network classifier consists of an LSTM and 2 fully connected layers. It outputs a probability to which the input can be considered fake.
 
