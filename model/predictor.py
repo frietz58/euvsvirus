@@ -1,3 +1,12 @@
+import sys
+sys.path.append("/usr/lib/python36.zip")
+sys.path.append("/usr/lib/python3.6")
+sys.path.append("/usr/lib/python3.6/lib-dynload")
+sys.path.append("/home/vmadmin/.local/lib/python3.6/site-packages")
+sys.path.append("/usr/local/lib/python3.6/dist-packages")
+sys.path.append("/usr/lib/python3/dist-packages")
+
+
 import keras
 from keras.models import load_model
 from keras.preprocessing.text import Tokenizer
@@ -7,6 +16,9 @@ import numpy as np
 from keras.models import model_from_json
 import pickle
 from keras.preprocessing.sequence import pad_sequences
+
+
+import argparse
 
 
 class Predictor():
@@ -22,12 +34,12 @@ class Predictor():
         and weights
         '''
         try:
-            json_file = open('../model/weights/model.json', 'r')
+            json_file = open('/var/www/KalmanFakeNews/KalmanFakeNews/euvsvirus/model/weights/model.json', 'r')
             loaded_model_json = json_file.read()
             json_file.close()
             loaded_model = model_from_json(loaded_model_json)
 
-            loaded_model.load_weights("../model/weights/model_weights.h5")
+            loaded_model.load_weights("/var/www/KalmanFakeNews/KalmanFakeNews/euvsvirus/model/weights/model_weights.h5")
             self.model=loaded_model
         except:
             print('Loading backup weights')
@@ -35,7 +47,7 @@ class Predictor():
                 
 
     def _load_tokenizer(self):
-        with open('tokenizer.pickle', 'rb') as handle:
+        with open('/var/www/KalmanFakeNews/KalmanFakeNews/euvsvirus/model/tokenizer/tokenizer.pickle', 'rb') as handle:
             self.tokenizer = pickle.load(handle)
 
 
@@ -127,3 +139,14 @@ class Predictor():
 
         acc = self.model.predict(model_input)
         return acc[0]
+
+parser = argparse.ArgumentParser(description='Process fake news statement')
+parser.add_argument("-t", "--text", required=True)
+args = parser.parse_args()
+
+pre = Predictor()
+result = pre.analyze(args.text)
+
+# print("here comes the predicition")
+# print(result)
+sys.stdout.write(str(result) + "\n")
