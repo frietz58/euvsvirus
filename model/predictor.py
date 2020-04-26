@@ -22,25 +22,21 @@ class Predictor():
         and weights
         '''
         try:
-            json_file = open('weights/model.json', 'r')
+            json_file = open('../model/weights/model.json', 'r')
             loaded_model_json = json_file.read()
             json_file.close()
             loaded_model = model_from_json(loaded_model_json)
 
-            loaded_model.load_weights("weights/model_weights.h5")
+            loaded_model.load_weights("../model/weights/model_weights.h5")
             self.model=loaded_model
         except:
             print('Loading backup weights')
             self._load_backup()
                 
 
-
-
     def _load_tokenizer(self):
-        with open('tokenizer/tokenizer.pickle', 'rb') as handle:
+        with open('tokenizer.pickle', 'rb') as handle:
             self.tokenizer = pickle.load(handle)
-
-
 
 
 
@@ -51,7 +47,7 @@ class Predictor():
         '''
 
         #Create an instance of the model architecture
-        json_file = open('weights/model.json', 'r')
+        json_file = open('../model/weights/model.json', 'r')
         loaded_model_json = json_file.read()
         json_file.close()
         loaded_model = model_from_json(loaded_model_json)
@@ -126,12 +122,8 @@ class Predictor():
         input: text string
         return: prediction of the model
         '''
-        
-        tokenized = self.tokenizer.texts_to_sequences(texts=to_test)
-        model_input = pad_sequences(tokenized, maxlen=1000)
-        
+        tokenized = self.tokenizer.texts_to_sequences(texts=[to_test])
+        model_input = pad_sequences(np.asarray(tokenized), maxlen=1000)
 
         acc = self.model.predict(model_input)
-        return acc
-
-
+        return acc[0]
